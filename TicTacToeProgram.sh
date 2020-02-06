@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash -x 
 #welcome message 
 echo "WELCOME TIC TAC TOE SIMULATOR"
 
@@ -20,18 +20,19 @@ function displayBoard()
    echo "  ${board[6]}   | ${board[7]}  | ${board[8]}  "
    echo "      |    |    "
 }
+displayBoard
 
 #assign symbol to player
 function getAssignSymbol()
 {
 	if [[ $((RANDOM%2)) -eq  0 ]]
 	then
-		user='X'
+		user="X"
 	else
-		computer='O'
+		computer="O"
 	fi
 }
-
+getAssignSymbol
 
 #function check who play first
 function getTossPlayer()
@@ -43,6 +44,7 @@ function getTossPlayer()
 		currentplayer="computer"
 	fi
 }
+getTossPlayer
 
 #function to get input from player
 function getCellInputFromUser()
@@ -57,13 +59,56 @@ function getCellInputFromUser()
 				board[$(($cellNumber-1))]="X"
 				count=$(($count+1 ))
 				displayBoard
+				checkForRow
+				checkForColumn
+				checkForDiagonal
 			fi
 		done
 	done
 }
 
-#calling function
-displayBoard
-getAssignSymbol
-getTossPlayer
+#function check for row
+function checkForRow()
+{
+	i=0
+	while [[ i -lt 9 ]]
+	do
+		if [[ ${board[$i]} == ${board[$((i+1))]} && ${board[$((i+1))]} == ${board[$((i+2))]} ]]
+		then
+			echo "PLAYER WIN"
+			exit
+		fi
+		i=$((i+3))
+	done
+}
+
+#function check for column
+function checkForColumn()
+{
+	i=0
+	while [[ i -lt 9 ]]
+	do
+		if [[ ${board[$i]} == ${board[$((i+3))]} && ${board[$((i+3))]} == ${board[$((i+6))]} ]]
+		then
+			echo "PLAYER WIN"
+			exit
+		fi
+		((i++))
+	done
+}
+
+#function check for diagonal
+function checkForDiagonal()
+{
+	i=0
+	if [[ ${board[$i]} -eq ${board[$((i+4))]} &&  ${board[$((i+4))]} -eq ${board[$((i+8))]} ]]
+	then
+		echo "PLAYER WIN"
+		exit
+		elif [[ ${board[$((i+2))]} -eq ${board[$((i+4))]} && ${board[$((i+4))]} -eq ${board[$((i+6))]} ]]
+		then
+			echo "PLAYER WIN"
+			exit
+	fi
+}
 getCellInputFromUser
