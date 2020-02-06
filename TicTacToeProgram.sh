@@ -1,6 +1,9 @@
-#!/bin/bash -x
+#!/bin/bash 
 #welcome message 
 echo "WELCOME TIC TAC TOE SIMULATOR"
+
+#variable
+count=0
 
 #declare dictionary 
 declare -a  board
@@ -41,7 +44,26 @@ function getTossPlayer()
 	fi
 }
 
+#function to get input from player
+function getCellInputFromUser()
+{
+	while [ $count -lt 9 ]
+	do
+		read -p "Enter The Cell Number:" cellNumber
+		for (( i=0; i<9; i++ ))
+		do
+			if [[ ${board[$i]} -eq $cellNumber ]]
+			then
+				board[$(($cellNumber-1))]="X"
+				count=$(($count+1 ))
+				displayBoard
+			fi
+		done
+	done
+}
+
 #calling function
 displayBoard
 getAssignSymbol
 getTossPlayer
+getCellInputFromUser
