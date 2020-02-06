@@ -17,4 +17,18 @@ function displayBoard()
    echo "  ${board[6]}   | ${board[7]}  | ${board[8]}  "
    echo "      |    |    "
 }
+
+#assign symbol to player
+function getAssignSymbol()
+{
+	if [[ $((RANDOM%2)) -eq  0 ]]
+	then
+		user='X'
+	else
+		computer='O'
+	fi
+}
+
+#calling function
 displayBoard
+getAssignSymbol
