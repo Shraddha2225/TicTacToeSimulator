@@ -29,6 +29,19 @@ function getAssignSymbol()
 	fi
 }
 
+
+#function check who play first
+function getTossPlayer()
+{
+	if [[ $((RANDOM%2)) -eq 0 ]]
+	then
+		currentplayer="user"
+	else
+		currentplayer="computer"
+	fi
+}
+
 #calling function
 displayBoard
 getAssignSymbol
+getTossPlayer
