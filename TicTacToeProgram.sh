@@ -13,7 +13,7 @@ board=(1 2 3 4 5 6 7 8 9)
 #function to displays Board
 function displayBoard()
 {
-	echo "  ${board[0]}   | ${board[1]}  | ${board[2]} "
+   echo "  ${board[0]}   | ${board[1]}  | ${board[2]} "
    echo "  ____|____|____"
    echo "  ${board[3]}   | ${board[4]}  | ${board[5]}  "
    echo "  ____|____|____"
@@ -23,28 +23,18 @@ function displayBoard()
 displayBoard
 
 #assign symbol to player
-function getAssignSymbol()
+function getAssignSymbolAndTossPlayer()
 {
 	if [[ $((RANDOM%2)) -eq  0 ]]
 	then
-		user="X"
+		CurrentPlayer="X"
+		Computer="O"
 	else
-		computer="O"
+		computer="X"
+		CurrentPlayer="O"
 	fi
 }
-getAssignSymbol
-
-#function check who play first
-function getTossPlayer()
-{
-	if [[ $((RANDOM%2)) -eq 0 ]]
-	then
-		currentplayer="user"
-	else
-		currentplayer="computer"
-	fi
-}
-getTossPlayer
+getAssignSymbolAndTossPlayer
 
 #function to get input from player
 function getCellInputFromUser()
@@ -105,10 +95,10 @@ function checkForDiagonal()
 	then
 		echo "PLAYER WIN"
 		exit
-		elif [[ ${board[$((i+2))]} -eq ${board[$((i+4))]} && ${board[$((i+4))]} -eq ${board[$((i+6))]} ]]
-		then
-			echo "PLAYER WIN"
-			exit
+	elif [[ ${board[$((i+2))]} -eq ${board[$((i+4))]} && ${board[$((i+4))]} -eq ${board[$((i+6))]} ]]
+	then
+		echo "PLAYER WIN"
+		exit
 	fi
 }
 getCellInputFromUser
