@@ -115,21 +115,21 @@ function checkForComputerRow()
 	echo "$1"
 	while [[ $i -lt 9 ]]
 	do
-		if [[ ${board[i]} == ${board[$((i+1))]} && ${board[i]} == $computer &&  ${board[$((i+2))]} == $((i+3)) ]]
+		if [[ ${board[i]} == ${board[$((i+1))]} && ${board[i]} == $1 &&  ${board[$((i+2))]} == $((i+3)) ]]
 		then
 			echo "row1"
 			board[$((i+2))]=$computer
 			((count++))
 			flag=1
 			displayBoard
-		elif [[ ${board[$i]} == ${board[$((i+2))]} &&  ${board[$i]} == $computer && ${board[$((i+1))]} == $((i+2)) ]]
+		elif [[ ${board[$i]} == ${board[$((i+2))]} &&  ${board[$i]} == $1 && ${board[$((i+1))]} == $((i+2)) ]]
 		then
 			echo "row2"
 			board[$((i+1))]=$computer
 			((count++))
 			flag=1
 			displayBoard
-		elif [[ ${board[$((i+1))]} == ${board[$((i+2))]} &&  ${board[$((i+1))]} == $computer && ${board[i]} == $((i+1)) ]]
+		elif [[ ${board[$((i+1))]} == ${board[$((i+2))]} &&  ${board[$((i+1))]} == $1 && ${board[i]} == $((i+1)) ]]
 		then
 			echo "row3"
 			board[$i]=$computer
@@ -140,7 +140,6 @@ function checkForComputerRow()
 		i=$((i+3))
 	done
 	getUserWinConditions
-	#checkTurnPlayer
 }
 
 #function check for computer column
@@ -149,21 +148,22 @@ function checkForComputerColumn()
 	i=0
 	while [[ $i -lt 9 ]]
 	do
-		if [[ ${board[$i]} == ${board[$((i+3))]} && ${board[i]} == $computer &&  ${board[$((i+6))]} == $((i+7)) ]]
+		if [[ ${board[$i]} == ${board[$((i+3))]} && ${board[i]} == $1 &&  ${board[$((i+6))]} == $((i+7)) ]]
 		then
 			echo "col1"
 			board[$((i+6))]=$computer
 			((count++))
+
 			flag=1
 			displayBoard
-		elif [[ ${board[$i]} == ${board[$((i+6))]} && ${board[i]} == $computer &&  ${board[$((i+3))]} == $((i+4)) ]]
+		elif [[ ${board[$i]} == ${board[$((i+6))]} && ${board[i]} == $i &&  ${board[$((i+3))]} == $((i+4)) ]]
 		then
 			echo "col2"
 			board[$((i+3))]=$computer
 			((count++))
 			flag=1
 			displayBoard
-		elif [[ ${board[$((i+3))]} == ${board[$((i+6))]} && ${board[$((i+3))]} == $computer && ${board[i]} == $((i+1)) ]]
+		elif [[ ${board[$((i+3))]} == ${board[$((i+6))]} && ${board[$((i+3))]} == $1 && ${board[i]} == $((i+1)) ]]
 		then
 			echo "col3"
 			board[$i]=$computer
@@ -174,49 +174,48 @@ function checkForComputerColumn()
 		((i++))
 	done
 	getUserWinConditions
-	#checkTurnPlayer
 }
 
 #function check for computer diagonal
 function checkForComputerDiagonal()
 {
 	i=0
-	if [[ ${board[$i]} == ${board[$((i+4))]} &&  ${board[i]} == $computer &&  ${board[$((i+8))]} == $((i+9)) ]]
+	if [[ ${board[$i]} == ${board[$((i+4))]} &&  ${board[i]} == $1 &&  ${board[$((i+8))]} == $((i+9)) ]]
 	then
 		echo "dia1"
 		board[$((i+8))]=$computer
 		((count++))
 		flag=1
 		displayBoard
-	elif [[ ${board[$((i+8))]} == ${board[$((i+4))]} && ${board[$((i+4))]} == $computer && ${board[$i]} == $((i+1)) ]]
+	elif [[ ${board[$((i+8))]} == ${board[$((i+4))]} && ${board[$((i+4))]} == $1 && ${board[$i]} == $((i+1)) ]]
 	then
 		echo "dia2"
 		board[$i]=$computer
 		((count++))
 		flag=1
 		displayBoard
-	elif [[ ${board[$i]} == ${board[$((i+8))]} && ${board[$((i+8))]} == $computer && ${board[$((i+4))]} == $((i+5)) ]]
+	elif [[ ${board[$i]} == ${board[$((i+8))]} && ${board[$((i+8))]} == $1 && ${board[$((i+4))]} == $((i+5)) ]]
 	then
 		echo "dia3"
 		board[$((i+4))]=$computer
 		((count++))
 		flag=1
 		displayBoard
-	elif [[ ${board[i+2]} == ${board[$((i+4))]} && ${board[$((i+4))]} == $computer && ${board[$((i+6))]} == $((i+7)) ]]
+	elif [[ ${board[i+2]} == ${board[$((i+4))]} && ${board[$((i+4))]} == $1 && ${board[$((i+6))]} == $((i+7)) ]]
 	then
 		echo "dia4"
 		board[$((i+6))]=$computer
 		((count++))
 		flag=1
 		displayBoard
-	elif [[ ${board[$((i+4))]} == ${board[$((i+6))]} && ${borad[$((i+6))]} == $computer && ${board[$((i+2))]} == $((i+3)) ]]
+	elif [[ ${board[$((i+4))]} == ${board[$((i+6))]} && ${borad[$((i+6))]} == $1 && ${board[$((i+2))]} == $((i+3)) ]]
 	then
 		echo "dia5"
 		board[$((i+2))]=$computer
 		((count++))
 		flag=1
 		displayBoard
-	elif [[ ${board[$((i+2))]} == ${board[$((i+6))]} && ${board[$((i+6))]} == $computer && ${board[$((i+4))]} == $((i+5)) ]]
+	elif [[ ${board[$((i+2))]} == ${board[$((i+6))]} && ${board[$((i+6))]} == $1 && ${board[$((i+4))]} == $((i+5)) ]]
 	then
 		echo "dia6"
 		board[$((i+4))]=$computer
@@ -225,18 +224,17 @@ function checkForComputerDiagonal()
 		displayBoard
 	fi
 	getUserWinConditions
-	#checkTurnPlayer
 }
 
 #function to check computer win conditions
 function getComputerWinConditions()
 {
-	checkForComputerRow
-	checkForComputerColumn
-	checkForComputerDiagonal
-#	checkForComputerRow $user
-#	checkForComputerColumn $user
-#	checkForComputerDiagonal $user
+	checkForComputerRow $computer
+	checkForComputerColumn $computer
+	checkForComputerDiagonal $computer
+	checkForComputerRow $user
+	checkForComputerColumn $user
+	checkForComputerDiagonal $user
 }
 
 #functcheckForComputerRow $computerion to get input from player
