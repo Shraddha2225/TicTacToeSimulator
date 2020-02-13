@@ -15,12 +15,12 @@ board=(1 2 3 4 5 6 7 8 9)
 #function to displays Board
 function displayBoard()
 {
-   echo "  ${board[0]}   | ${board[1]}  | ${board[2]} "
-   echo "  ____|____|____"
-   echo "  ${board[3]}   | ${board[4]}  | ${board[5]}  "
-   echo "  ____|____|____"
-   echo "  ${board[6]}   | ${board[7]}  | ${board[8]}  "
-   echo "      |    |    "
+   echo "-------------"
+	for((i=0;i<9;i+=3))
+	do
+		echo "| ${board[$i]} | ${board[$((i+1))]} | ${board[$((i+2))]} |"
+		echo "-------------"
+	done
 }
 
 #assign symbol to player
@@ -43,13 +43,9 @@ function  checkTurnPlayer()
 {
 	if [[ $turn == "computer" ]]
 	then
-		user="O"
-		computer="X"
-		getCellInputFromUser
-	else
-		user="X"
-		computer="O"
 		getEntryForComputerWin
+	else
+		getCellInputFromUser
 	fi
 }
 
@@ -61,7 +57,7 @@ function checkForRow()
 	do
 		if [[ ${board[$i]} == ${board[$((i+1))]} && ${board[$((i+1))]} == ${board[$((i+2))]} ]]
 		then
-			echo "$turn  win"
+			echo "${board[$i]}  win"
 			exit
 		fi
 		i=$((i+3))
@@ -76,7 +72,7 @@ function checkForColumn()
 	do
 		if [[ ${board[$i]} == ${board[$((i+3))]} && ${board[$((i+3))]} == ${board[$((i+6))]} ]]
 		then
-			echo "$turn win"
+			echo "${board[$i]} win"
 			exit
 		fi
 		((i++))
@@ -89,11 +85,11 @@ function checkForDiagonal()
 	i=0
 	if [[ ${board[$i]} == ${board[$((i+4))]} &&  ${board[$((i+4))]} == ${board[$((i+8))]} ]]
 	then
-		echo "$turn win"
+		echo "${board[$i]} win"
 		exit
 	elif [[ ${board[$((i+2))]} == ${board[$((i+4))]} && ${board[$((i+4))]} == ${board[$((i+6))]} ]]
 	then
-		echo "$turn win"
+		echo "${board[$((i+2))]} win"
 		exit
 	fi
 }
@@ -105,37 +101,35 @@ function getUserWinConditions()
 	checkForColumn
 	checkForDiagonal
 }
-#calling function
-displayBoard
 
+#function set pointer
+function setValue()
+{
+	((count++))
+	flag=1
+	displayBoard
+}
 #function check for computer
 function checkForComputerRow()
 {
 	i=0
-	echo "$1"
 	while [[ $i -lt 9 ]]
 	do
 		if [[ ${board[i]} == ${board[$((i+1))]} && ${board[i]} == $1 &&  ${board[$((i+2))]} == $((i+3)) ]]
 		then
 			echo "row1"
 			board[$((i+2))]=$computer
-			((count++))
-			flag=1
-			displayBoard
+			setValue
 		elif [[ ${board[$i]} == ${board[$((i+2))]} &&  ${board[$i]} == $1 && ${board[$((i+1))]} == $((i+2)) ]]
 		then
 			echo "row2"
 			board[$((i+1))]=$computer
-			((count++))
-			flag=1
-			displayBoard
+			setValue
 		elif [[ ${board[$((i+1))]} == ${board[$((i+2))]} &&  ${board[$((i+1))]} == $1 && ${board[i]} == $((i+1)) ]]
 		then
 			echo "row3"
 			board[$i]=$computer
-			((count++))
-			flag=1
-			displayBoard
+			setValue
 		fi
 		i=$((i+3))
 	done
@@ -152,24 +146,17 @@ function checkForComputerColumn()
 		then
 			echo "col1"
 			board[$((i+6))]=$computer
-			((count++))
-
-			flag=1
-			displayBoard
-		elif [[ ${board[$i]} == ${board[$((i+6))]} && ${board[i]} == $i &&  ${board[$((i+3))]} == $((i+4)) ]]
+			setValue
+		elif [[ ${board[$i]} == ${board[$((i+6))]} && ${board[i]} == $1 &&  ${board[$((i+3))]} == $((i+4)) ]]
 		then
 			echo "col2"
 			board[$((i+3))]=$computer
-			((count++))
-			flag=1
-			displayBoard
+			setValue
 		elif [[ ${board[$((i+3))]} == ${board[$((i+6))]} && ${board[$((i+3))]} == $1 && ${board[i]} == $((i+1)) ]]
 		then
 			echo "col3"
 			board[$i]=$computer
-			((count++))
-			flag=1
-			displayBoard
+			setValue
 		fi
 		((i++))
 	done
@@ -184,44 +171,32 @@ function checkForComputerDiagonal()
 	then
 		echo "dia1"
 		board[$((i+8))]=$computer
-		((count++))
-		flag=1
-		displayBoard
+		setValue
 	elif [[ ${board[$((i+8))]} == ${board[$((i+4))]} && ${board[$((i+4))]} == $1 && ${board[$i]} == $((i+1)) ]]
 	then
 		echo "dia2"
 		board[$i]=$computer
-		((count++))
-		flag=1
-		displayBoard
+		setValue
 	elif [[ ${board[$i]} == ${board[$((i+8))]} && ${board[$((i+8))]} == $1 && ${board[$((i+4))]} == $((i+5)) ]]
 	then
 		echo "dia3"
 		board[$((i+4))]=$computer
-		((count++))
-		flag=1
-		displayBoard
+		setValue
 	elif [[ ${board[i+2]} == ${board[$((i+4))]} && ${board[$((i+4))]} == $1 && ${board[$((i+6))]} == $((i+7)) ]]
 	then
 		echo "dia4"
 		board[$((i+6))]=$computer
-		((count++))
-		flag=1
-		displayBoard
+		setValue
 	elif [[ ${board[$((i+4))]} == ${board[$((i+6))]} && ${borad[$((i+6))]} == $1 && ${board[$((i+2))]} == $((i+3)) ]]
 	then
 		echo "dia5"
 		board[$((i+2))]=$computer
-		((count++))
-		flag=1
-		displayBoard
+		setValue
 	elif [[ ${board[$((i+2))]} == ${board[$((i+6))]} && ${board[$((i+6))]} == $1 && ${board[$((i+4))]} == $((i+5)) ]]
 	then
 		echo "dia6"
 		board[$((i+4))]=$computer
-		((count++))
-		flag=1
-		displayBoard
+		setValue
 	fi
 	getUserWinConditions
 }
@@ -229,33 +204,82 @@ function checkForComputerDiagonal()
 #function to check computer win conditions
 function getComputerWinConditions()
 {
-	checkForComputerRow $computer
-	checkForComputerColumn $computer
-	checkForComputerDiagonal $computer
-	checkForComputerRow $user
-	checkForComputerColumn $user
-	checkForComputerDiagonal $user
+	if [ $flag -eq 0 ]
+	then
+		checkForComputerRow $computer
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkForComputerColumn $computer
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkForComputerDiagonal $computer
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkForComputerRow $user
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkForComputerColumn $user
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkForComputerDiagonal $user
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkCorner
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkCenter
+	fi
+	if [ $flag -eq 0 ]
+	then
+		checkSide
+	fi
 }
 
-#functcheckForComputerRow $computerion to get input from player
-function getCellInputFromUser ()
+#function for check corner
+function checkCorner()
 {
+	for (( i=0; i<9; i=i+6 ))
+	do
+		if [[ ${board[$i]} == $((i+1)) ]]
+		then
+			board[$i]=$computer
+			setValue
+		elif [[ ${board[$((i+2))]} == $((i+3)) ]]
+		then
+			board[$((i+2))]=$computer
+			setValue
+		fi
+	done
+}
+
+#function to get input from player
+function getCellInputFromUser ()
+{	
+	echo "User Play"
 	if [[ $count -ne $finalValue ]]
 	then
 		read -p "Enter The Cell Number:" cellNumber
-		if [[ ${board[(( $cellNumber-1 ))]} -eq $(( $cellNumber )) ]]
+		if [[ ${board[$cellNumber-1]} -eq $cellNumber ]]
 		then
 			board[$(($cellNumber-1))]=$user
 			count=$(($count+1))
 			displayBoard
   			getUserWinConditions
 		else
-			 getCellInputFromUser
+			echo "choose another cell" 
+			getCellInputFromUser
 		fi
 		getEntryForComputerWin
 	else
-			echo "Game Tie"
-			exit
+		echo "Game Tie"
+		exit
 	fi
 }
 
@@ -263,10 +287,10 @@ function getCellInputFromUser ()
 function getEntryForComputerWin()
 {
 	flag=0
+	echo "Computer Play"
 	if [[ $count -ne $finalValue ]]
 	then
 		getComputerWinConditions
-		#echo "count is:$count"
 		if [[ $flag -eq 0 ]]
 		then
 			randomnumber=$((RANDOM%9+1))
@@ -281,9 +305,8 @@ function getEntryForComputerWin()
 				echo "Choose another cell"
 				getEntryForComputerWin
 			fi
-		else
-			getCellInputFromUser
 		fi
+		getCellInputFromUser
 	else
 		echo "Game Tie"
 		exit
@@ -291,6 +314,7 @@ function getEntryForComputerWin()
 }
 
 #calling function
+displayBoard
 getAssignSymbolAndTossPlayer
 checkTurnPlayer
 
