@@ -236,6 +236,10 @@ function getComputerWinConditions()
 	then
 		checkCenter
 	fi
+	if [ $flag -eq 0 ]
+	then
+		checkSide
+	fi
 }
 
 #function for check corner
@@ -264,6 +268,19 @@ function checkCenter()
 		setValue
 		break;
 	fi
+}
+
+#function for check side
+function checkSide()
+{
+	for (( i=0; i<8; i=i+2 ))
+	do
+		if [[ ${board[$i]} == $((i+1)) ]]
+		then
+			board[$i]=$computer
+			setValue
+		fi
+	done
 }
 
 #function to get input from player
